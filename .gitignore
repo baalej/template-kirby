@@ -1,0 +1,23 @@
+# Dependencias gestionadas por Composer
+/kirby
+/vendor
+
+# Generado en runtime
+/media
+/site/accounts
+/site/cache
+/site/sessions
+/site/logs
+
+# Entorno
+.env
+.env.local
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor
+/.idea
+/.vscode

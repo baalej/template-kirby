@@ -1,0 +1,12 @@
+name: template-kirby
+type: php
+docroot: ""
+php_version: "8.3"
+webserver_type: nginx-fpm
+omit_containers: [db, ddev-ssh-agent]
+performance_mode: none
+nodejs_version: none
+disable_settings_management: true
+corepack_enable: false
+web_environment:
+  - KIRBY_DEBUG=true
