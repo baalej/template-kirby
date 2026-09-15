@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "kirby-cms": {
+      "source": "baalej/skills",
+      "sourceType": "github",
+      "skillPath": "kirby-cms/SKILL.md",
+      "computedHash": "050157202f4a411bc24c747fde395e401f97f825578ceb279d45dfdd6a75c3a2"
+    }
+  }
+}
