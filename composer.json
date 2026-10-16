@@ -5,13 +5,16 @@
   "license": "proprietary",
   "require": {
     "php": ">=8.3.0",
-    "getkirby/cms": "~5.5.3"
+    "getkirby/cms": "~5.6.1"
   },
   "config": {
     "allow-plugins": {
       "getkirby/composer-installer": true
     },
-    "optimize-autoloader": true
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "8.3.0"
+    }
   },
   "scripts": {
     "start": [

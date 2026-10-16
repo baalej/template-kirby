@@ -111,7 +111,7 @@ assets/
 ```php
 <?php
 $assets = [
-    'base/reset.css', 'base/variables.css', 'base/typography.css',
+    'base/reset.css', 'base/tokens.css', 'base/typography.css',
     'snippets/header.css', 'snippets/footer.css',
     'snippets/components/card.css',
     'templates/project.css',

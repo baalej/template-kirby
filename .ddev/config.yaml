@@ -2,7 +2,7 @@ name: template-kirby
 type: php
 docroot: ""
 php_version: "8.3"
-webserver_type: nginx-fpm
+webserver_type: apache-fpm
 omit_containers: [db, ddev-ssh-agent]
 performance_mode: none
 disable_settings_management: true

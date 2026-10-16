@@ -1,36 +1,61 @@
-<img src="http://getkirby.com/assets/images/github/plainkit.jpg" width="300">
+# template-kirby
 
-**Kirby: the CMS that adapts to any project, loved by developers and editors alike.**
-The Plainkit is a minimal Kirby setup with the basics you need to start a project from scratch. It is the ideal choice if you are already familiar with Kirby and want to start step-by-step.
+Plantilla para proyectos Kirby 5, en local con DDEV y desplegados por
+rsync a hosting compartido. Las normas de código están en `AGENTS.md`.
 
-You can learn more about Kirby at [getkirby.com](https://getkirby.com).
+## Proyectos nuevos
 
-### Try Kirby for free
+Se crean con `new-kirby <nombre>` (en `~/automation`). El script instala la
+última versión etiquetada con Composer, fija el nombre en
+`.ddev/config.yaml`, hace el primer commit y arranca DDEV.
 
-You can try Kirby and the Plainkit on your local machine or on a test server as long as you need to make sure it is the right tool for your next project. … and when you’re convinced, [buy your license](https://getkirby.com/buy).
+## Desarrollo
 
-### Get going
+```bash
+colima start
+ddev start
+ddev launch           # la web
+ddev launch /panel    # el Panel; la primera vez pide crear el usuario
+```
 
-Read our guide on [how to get started with Kirby](https://getkirby.com/docs/guide/quickstart).
+Al terminar:
 
-You can [download the latest version](https://github.com/getkirby/plainkit/archive/main.zip) of the Plainkit.
-If you are familiar with Git, you can clone Kirby's Plainkit repository from Github.
+```bash
+ddev poweroff
+colima stop
+```
 
-    git clone https://github.com/getkirby/plainkit.git
+## Decisiones que conviene no deshacer
 
-## What's Kirby?
+**Solo se toca `name:` en `.ddev/config.yaml`.** `ddev config` regenera el
+fichero entero con valores por defecto y cientos de líneas de comentarios.
 
--   **[getkirby.com](https://getkirby.com)** – Get to know the CMS.
--   **[Try it](https://getkirby.com/try)** – Take a test ride with our online demo. Or download one of our kits to get started.
--   **[Documentation](https://getkirby.com/docs/guide)** – Read the official guide, reference and cookbook recipes.
--   **[Issues](https://github.com/getkirby/kirby/issues)** – Report bugs and other problems.
--   **[Feedback](https://feedback.getkirby.com)** – You have an idea for Kirby? Share it.
--   **[Forum](https://forum.getkirby.com)** – Whenever you get stuck, don't hesitate to reach out for questions and support.
--   **[Discord](https://chat.getkirby.com)** – Hang out and meet the community.
--   **[Mastodon](https://mastodon.social/@getkirby)** – Spread the word.
--   **[Bluesky](https://bsky.app/profile/getkirby.com)** – Spread the word.
+**DDEV con Apache**, como el hosting. Así el `.htaccess` se usa también
+en local: con nginx no se aplica, y `content/` o `site/` quedan accesibles
+por URL sin que nada lo avise.
 
----
+**DDEV sin base de datos.** Kirby guarda el contenido en ficheros
+(`content/`), así que el contenedor de BD sobra.
 
-© 2009 Bastian Allgeier
-[getkirby.com](https://getkirby.com) · [License agreement](https://getkirby.com/license)
+**El modo debug sale del entorno.** DDEV define `KIRBY_DEBUG=true` y
+`site/config/config.php` lo lee. El hosting no lo define, así que en
+producción el debug queda apagado sin tener que acordarse.
+
+**Composer resuelve como PHP 8.3** (`config.platform.php`), la misma
+versión que DDEV, aunque el Mac tenga otra. Así `composer.lock` y
+`vendor/` sirven igual en local, en DDEV y en el hosting.
+
+**`kirby/`, `vendor/`, `media/` y `site/{accounts,cache,sessions}` no van
+a git.** Los dos primeros los instala Composer; el resto lo genera Kirby.
+
+## Mantener esta plantilla
+
+Los proyectos creados **no** heredan cambios de aquí. Etiqueta con semver
+cada versión que quieras que hereden los proyectos nuevos:
+
+```bash
+git tag v1.3.0 && git push && git push --tags
+```
+
+Composer solo ve los tags que están en GitHub; `new-kirby` avisa si hay
+alguno sin subir.
