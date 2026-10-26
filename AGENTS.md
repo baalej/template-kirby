@@ -122,6 +122,18 @@ $assets = [
 
 Same pattern for `js()`, with `defer` and only the JS a given template's snippets/blocks actually need.
 
+**Exception — plugins:** a plugin in `site/plugins/` keeps its own CSS/JS in its `assets/` folder and loads it from its own snippets (`$kirby->plugin('author/name')->asset('file.css')->url()`), so it stays self-contained and can be dropped into or removed from a project as a unit.
+
+### 2.3 Analytics and cookie consent
+
+The template ships `site/plugins/consent`: Google Analytics 4 behind a cookie banner. Use it — never write another banner or analytics snippet.
+
+- **Enable:** set `'baalej.consent' => ['id' => 'G-…']` in `site/config/config.php`. Without an `id` nothing renders. Options (privacy page, banner texts) are listed with their defaults in the plugin's `index.php`; override them in config, never edit the defaults per project.
+- **Already wired:** `snippet('consent/banner')` at the end of `<body>` and `snippet('consent/settings')` (the button that reopens the banner, required to withdraw consent) in the footer of `site/snippets/layout.php`. Keep both if the layout changes.
+- **Any script that sets cookies or tracks visitors** (Meta Pixel, Hotjar, Tag Manager…) must only load after consent: add its loader next to `loadAnalytics()` in `assets/banner.js`, and its cookies to the cleanup on withdrawal. Never put it directly in a template or the `<head>`.
+- **Styling** is per project: override `.consent` / `.consent-settings` in the project's own CSS, don't edit the plugin's `banner.css`.
+- **Local testing:** keep the real `id` out of local environments (see the README). The markup/storage contract the JS relies on is documented at the top of `assets/banner.js`.
+
 ---
 
 ## 3. Code style
@@ -220,6 +232,7 @@ CSS/JS require no build/watch step — edit files under `assets/css/` and `asset
 - Don't create new fields or blueprints without checking whether an existing one already covers the need.
 - Don't skip validation/escaping of user content, even if "in this case there's no risk."
 - Don't enable page caching as a default optimization — see §4.
+- Don't load tracking or cookie-setting scripts outside the consent plugin — see §2.3.
 
 ---
 

@@ -23,6 +23,8 @@
   </main>
   <footer>
     Footer
+    <?php snippet('consent/settings') ?>
   </footer>
+  <?php snippet('consent/banner') ?>
 </body>
 </html>

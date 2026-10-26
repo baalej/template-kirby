@@ -25,6 +25,43 @@ ddev poweroff
 colima stop
 ```
 
+## Google Analytics y banner de cookies
+
+Viene en `site/plugins/consent` y está apagado mientras no haya `id`.
+Para activarlo, en `site/config/config.php`:
+
+```php
+'baalej.consent' => [
+  'id' => 'G-XXXXXXXXXX',
+  'privacy' => 'privacidad', // id de página o URL; opcional
+],
+```
+
+Los textos del banner (`text`, `accept`, `reject`, `privacyLabel`,
+`settings`) se cambian con esas mismas claves. Los estilos usan
+`--foreground` y `--background`; para adaptarlos al proyecto, se
+sobrescriben las clases `.consent` y `.consent-settings` desde su CSS.
+
+GA no se descarga hasta que se acepta, así que antes de elegir no hay
+cookies ni hace falta Consent Mode. El botón «Configurar cookies» del
+footer reabre el banner. Si se retira el consentimiento, se borran las
+cookies `_ga*` y se recarga la página.
+
+Para no contar las visitas de desarrollo, el `id` real va solo en la
+config del dominio de producción, que Kirby carga encima de `config.php`
+cuando el host coincide:
+
+```php
+// site/config/config.www.dominio.com.php
+return [
+  'baalej.consent' => ['id' => 'G-XXXXXXXXXX'],
+];
+```
+
+Para probarlo en local se usa un ID de prueba en
+`site/config/config.template-kirby.ddev.site.php` (con el nombre del
+proyecto) y se borra al terminar.
+
 ## Decisiones que conviene no deshacer
 
 **Solo se toca `name:` en `.ddev/config.yaml`.** `ddev config` regenera el
